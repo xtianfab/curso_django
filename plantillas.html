@@ -1,0 +1,77 @@
+1. Indicar la ruta del archvivo en setting.py en DIRS
+django utiliza las barras invertidas /
+No olvidadr importar el loader
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ["ruta/del/archivo/"],
+
+2. Importar el modulo template de djando
+from django.template import Template, Context, loader
+
+3. Seleccionamos el template
+archivo_externo = get_template("Archivo.html")
+
+3. Crear el contexto ---------------------------------------------------------------------------------------------
+ - Datos adicionales (variables, funciones)
+ - Contenido dinamico
+
+ - Para pasar variables u otros valores, debemos pasarlos en un diccionario
+ nombre = "Cristian"
+ apellido = "Ramirez"
+
+contexto = {"nombre_persona":nombre, "apellido_persona": apellido}
+
+- Tambien podemos pasar los valores directamente sin variables ------------------------------------------------------
+contexto = {"nombre_persona":"Cristian", "apellido_persona":"Ramirez"}
+
+- Para rescatar estos valores desde el html lo debemos hacer con el siguiente formato {{nombre_persona}}, {{apellido_persona}}
+
+- Tambien pasar los valores de una clase -------------------------------------------------------------------------------
+Ej: usamos los valores de una clase Persona con parametros self.nombre, self.apellido
+
+contexto = {"nombre_persona":p1.nombre, "apellido_persona":p1.apellido}
+
+- Listas en el contexto -----------------------------------------------------------------------------------------
+Podemos pasar listas directamente dentro del contexto o a traves de una variable
+
+contexto = {"temas": ["Matematica", "Fisica", "Quimica"]}
+
+A traves de una variable
+temas_del_curso = ["Matematica", "Fisica", "Quimica"]
+
+contexto ={"temas": temas_del_curso}
+
+En el html podemos llamar a cada elemento dentro de la lista a traves del indide con la nomenclatura del punto
+
+{{temas.0}} --> nos devuelve "Matematicas"
+
+5. Renderizar el Template
+
+archivo = archivo_externo.render(contexto)
+
+from django.template import Template, Context
+from djando.template.loader import get_template
+
+def saludo(request):
+    archivo_externo = get_template("archivo.html")
+    contexto = {"nombre":"Cristian", "apellido":"Ramirez"}
+    archivo = archivo_externo.render(contexto)
+    return HttpResponse(archivo)
+
+# SHORTCUTS Renderizar
+Se puede simplificar mucho mas el codigo con el shortcut render
+
+1. Importa el shoracut
+from djando.shortcut import render
+
+2. En vez de retornar un HttpResponse retormamos el render
+return render(request, "archivo.html", contexto)
+
+from django.template.loader import get_template
+from django.shortcut import render
+
+def saludo(request):
+    ctx= {"nombre":"Cristian", "apellido":"Ramirez"}
+    return render(request, 'archivo.html', ctx)

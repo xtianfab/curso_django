@@ -1,0 +1,9 @@
+La herencia de plantillas nos permite utilizar el mismo formato de la plantilla padre en todas las plantillas hijas.
+
+- Para indicar que una plantilla es padre debemos indicar en la misma, cuales serian las partes que van a modificarse y cuales no.
+
+Para indicar que se modificara el titulo
+{% block title %} {% endblock %}
+
+Para indicar donde ira el contenido que se modificara
+{% block content %} {% endblock%}

@@ -1,0 +1,66 @@
+django trata las bases de datos como Clases. 
+Para crear una base de datos es necesario crear una clase del tipo Model 
+
+1- Primeramente debemos crear un proyecto con una aplicacion desde la consola
+
+django-admin startproject TiendaOnline
+
+2 - Creamos la aplicacion, que nos creara otra carpeta con varios archivos, el archivo con el que trabajaremos el models.py donde debemos crear la base de datos
+
+python manage.py startapp gestionPedidos
+
+3 - Creamos en el archivo models.py las clases 
+
+class Clientes(models.Model):
+    nombre = models.CharField(max_length=20)
+    direccion = models.CharField(max_length=30)
+    email = models.EmailField()
+    telf= models.CharField(max_length=10)
+
+4 - En el archivo settings.py debemos registrar la nueva aplicacion creada (gestionPedidos)
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'gestionPedidos',
+]
+
+4.1 Podemos comprobar con el siguiente comando que todo esta bien 
+python manage.py check gestionPedidos
+System check identified no issues (0 silenced).
+
+5 - Creamos la base de datos
+python manage.py makemigrations
+
+Migrations for 'gestionPedidos':
+  gestionPedidos\migrations\0001_initial.py
+    - Create model Articulos
+    - Create model Clientes
+    - Create model Pedidos
+
+6 - Decimos a django que agregue la table creada en el paso 3
+el numero al final se obtiene del paso 5
+python manage.py sqlmigrate gestionPedidos 0001
+
+7 - Por ultimo migramos la base de datos al la base de datos creada por python
+python manage.py migrate
+
+COMANDOS PARA MANIPULAR BASE DE DATOS DESDE SHELL-----------------------------------------
+Debemos importar la tabla desde la clase gestionPedidos
+from gestionPedidos.models import Articulos
+- Crear----------------
+art=Articulos(nombre='Torta', seccion='desayuno', Precio=5000)
+art.save()
+
+Otra forma
+art=Articulos.objects.create(nombre='Torta', seccion='desayuno', Precio=5000)
+
+- Borrar---------------
+Creamos una variable donde almacenar el articulo
+
+artBorrar = Articulos(id=1)
+artBorrar.delete()

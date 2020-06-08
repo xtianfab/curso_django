@@ -1,0 +1,16 @@
+Para increustar una plantilla dentro de otra plantilla debes hacerlo con {% include "superior/barra.html"  %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Incrustada</title>
+</head>
+<body>
+    {% include 'superior/barra.html' %}
+    <h1>Esta es mi primera pagina con python</h1>
+    <h2>Mi nombre es {{nombre_persona}} {{apellido_persona}} </h2>
+    <h3>Fecha Actual: {{ahora.day}}/{{ahora.month}}/{{ahora.year}} </h3>
+</body>
+</html>

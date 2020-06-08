@@ -1,0 +1,27 @@
+Para las conficionales debemos hacerlo dentro de llaves con el simbolo de porcentaje con su respectivo cierre
+Ej:
+
+temas = ["Matematicas", "Fisica", "Quimica"]
+
+{% if temas%} -->  Comprueba que temas tenga elemento, caso contrario no entra en el if
+    {% for tema in temas %}
+        {{tema}}
+    {% endfor %}
+{% else %}
+    <p> No hay elementos dentro de la lista</p> --> Si no hay elementos en la lista
+{% endif %}
+
+Operadores de comparacion ------------------------------------------------------------------------------
+*Se recomiendo no utilizar demasiados operadores de comparacion dentro de la plantilla, solo en casos donde es necesario
+
+Ej:
+{# CODIGO DENTRO DE PYTHON, EN EL CONEXTO}
+contexto = Context{"nombre":"Cristian", "apellido":"Ramirez"}
+
+
+{% if nombre == 'Cristian'%}
+    <p> El nombre es Cristian</p>
+{% else %}
+    <p>El nombre no es Cristian</p>
+{% endif %}
+
