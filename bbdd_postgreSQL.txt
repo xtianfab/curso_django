@@ -80,8 +80,30 @@ art.save()
 Otra forma
 art=Articulos.objects.create(nombre='Torta', seccion='desayuno', Precio=5000)
 
+- Leer-----------------
+PAra poder ver desde el shell debemos crear una funcion del tipo __str__ en la clase que queremos ver
+
+def __str__(self):
+        return f"{self.nombre}, {self.direccion}, {self.email}, {self.telf}"
+
+Luego hacer la migraciones correspondientes
+python manage.py makemigrations
+python manage.py migrate
+
+En el shell el comando seria:
+Clientes.objects.filter(id=1)
+
+Se puede filtrar por distintos valores:
+Clientes.objects.filter(nombre="Cristian", telf="0981491932")
+
 - Borrar---------------
 Creamos una variable donde almacenar el articulo
 
 artBorrar = Articulos(id=1)
 artBorrar.delete()
+
+
+Comparacion desde el shell: ------------------------------------------
+
+__gte = >
+__lte = <

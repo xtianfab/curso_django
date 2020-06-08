@@ -1,0 +1,42 @@
+- Para entrar al panel de admin de django debemos crear un superuser
+python manage.py createsuperuser
+
+- Correr el servidor
+python manage.py runserver
+
+- ingresar a la url de admin
+127.0.0.1:8000/admin
+
+- Resitrar en el archivo admin los models.
+
+from getionsPedidos.models import Clientes, Articulos, Pedidos
+admin.site.register(Clientes)
+admin.site.register(Articulos)
+admin.site.register(Pedidos)
+
+Campos no obligatorios desde el panel----------------------------
+
+En la clase dentro de models agregar al campo blank= true, null= true
+class Clientes(models.Model):
+    email = models.EmailField(blank=True, null=True)
+
+Cambiar las etiquetas que se muestran en el panel---------------------
+agregar al campo verbose_name=""
+
+class Clientes(models.Model):
+    telf= models.CharField(max_length=10, verbose_name="Telefono")
+
+MOstrar datos en el panel--------------------------------------------
+En el archivo admin agregar una clase que hereda de admin.ModelAdmin
+
+class ClientesAdmin(admin.ModelAdmin):
+    list_display=("nombre", "direccion", "email", "telf")
+    search_fields=("nombre", "direccion", "email", "telf")
+
+Agrega la clase creada al admin.site
+admin.site.register(Clientes, ClientesAdmin)
+
+Filtros----------------------------------------------------------------
+En el archivo admin asgregar list_filter
+class PedidosAdmin(admin.ModelAdmin):
+    list_filter=("nro_pedido", "fecha", "entregado")

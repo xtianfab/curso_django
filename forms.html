@@ -1,0 +1,38 @@
+- Crear un formulario en html
+    <!-- En action indicamos la url -->
+    <form action="/buscar" method="get">
+        <input type="text" name="productos">
+        <input type="submit" value="Buscar" name="" id="">
+
+    </form>
+
+
+- Agregamos la vista del formulario en views
+
+def buscar(request):
+
+    return (request, "busqueda_productos.html")
+
+-registramos en urls.py
+
+from django.urls import path
+from gestionPedidos import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('busqueda_productos/', views.buscar)
+
+]
+
+- Agregamos el views de ka url buscar
+def busqueda(request):
+    mensaje = 'El resultado de la busqueda es:%r' % request.GET["productos"]
+    return HttpResponse(mensaje)
+
+-registramos en urls.py
+from django.urls import path
+from gestionPedidos import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('busqueda_productos/', views.buscar),
+    path('busqueda/', views.buscar),
+]

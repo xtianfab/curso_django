@@ -3,6 +3,7 @@
 # from django.template.loader import get_template
 from django.shortcuts import render
 import datetime
+from django.http import HttpResponse
 
 class Persona(object):
     def __init__(self, nombre, apellido):
@@ -22,4 +23,8 @@ def hosting(request):
 def correo(request):
     fecha = datetime.datetime.now()
     return render(request, 'correo.html', {"fecha": fecha})
+
+def buscar(request):
+    msj= "El resulado de la busqueda es %r" %request.GET["productos"]
+    return HttpResponse(msj)
 
