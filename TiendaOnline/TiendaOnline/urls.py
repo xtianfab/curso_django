@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from gestionPedidos.views import form_contacto
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('contacto/', form_contacto),
 ]

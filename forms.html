@@ -1,4 +1,4 @@
-- Crear un formulario en html
+- Crear un formulario en html--------------------
     <!-- En action indicamos la url -->
     <form action="/buscar" method="get">
         <input type="text" name="productos">
@@ -7,28 +7,27 @@
     </form>
 
 
-- Agregamos la vista del formulario en views
+- Agregamos la vista del formulario en views--------------------------------------
 
-def buscar(request):
+def formulario_buscar(request):
 
     return (request, "busqueda_productos.html")
 
--registramos en urls.py
+-Registramos el formuladio urls.py-------------------------------------------------------------
 
 from django.urls import path
 from gestionPedidos import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('busqueda_productos/', views.buscar)
-
 ]
 
-- Agregamos el views de ka url buscar
+- Agregamos el views de la url donde se mostrara el resultado---------------------------------
 def busqueda(request):
     mensaje = 'El resultado de la busqueda es:%r' % request.GET["productos"]
     return HttpResponse(mensaje)
 
--registramos en urls.py
+-Registramos en urls.py
 from django.urls import path
 from gestionPedidos import views
 urlpatterns = [
@@ -36,3 +35,80 @@ urlpatterns = [
     path('busqueda_productos/', views.buscar),
     path('busqueda/', views.buscar),
 ]
+
+SOLICITAR INFO A LA BBDD-------------------------------------------------------------------------
+- Importamos nuestros modelos a views 
+from gestionPedidos.models import Articulos
+
+- Verificar que el formulario contenga una palabra de busqueda, si se envia una busqueda "vacia" puede generar problemas en la BBDD
+
+- En views crear un condicional
+def busqueda(request):
+
+    if request.GET["productos"]: --> Si existe una palabra nos devuelve el mensaje
+        mensaje = 'El resultado de la busqueda es:%r' % request.GET["productos"]
+        
+    else:
+        mensaje= 'No has intorucido nada.'
+    
+    return HttpResponse(mensaje) --> Tanto si entra en el if o else, nos devuelve el mensaje corres
+
+- 'Rescatamos' lo que viene del formulario (request.GET["productos"]) y lo buscamos en la BBDD
+
+def busqueda(request):
+
+    if request.GET["productos"]:
+
+        producto=request.GET["productos"] -> Almacenamos lo que se busca
+
+        <!-- Buscamos en la bbdd en el campo nombre lo que obtuvimos del formulario 
+        __icontains funciona con el like en sql-->
+        articulo= Articulos.obejects.filter(nombre__icontains=producto) 
+
+        <!-- Devolvemos el resultado de la buqueda en una paginaa-->
+        return render (request, "pagina_resultado.html", {"articulos":articulo, "consulta":producto})
+        
+    else:
+        mensaje= 'No has intorucido nada.'
+    
+    return HttpResponse(mensaje)
+
+- Creamos la pagina del resultado de busqueda "pagina_resultado.html"
+
+<p>Estas buscando: {{consulta}} </p>
+<!--Creamos un condiciional para asegurarnos de que lo que se busca hay en la base de datos-->
+{% if articulos %}
+
+    <p>Articulso encontrados: {{articulos|length}}articulos</p>
+
+    <ul>
+    {% for articulo in articulos %}
+        <li>
+            {{articulo.nombre}}
+        </li>
+    {% endfor %}
+    </ul>
+
+{% else %}
+    <p>
+        Articulo no encontrado.
+    </p>
+{% endif %}
+
+- Limitamos los caracteres que se ingresan en la busqueda
+
+Lo hacemos con un condicional en views--------------------------------------
+
+if request.GET["productos"]:
+
+        producto=request.GET["productos"] -> Almacenamos lo que se busca
+        if len(producto)>20:
+            mensaje="Texto demasiado largo"
+        else:
+            articulo= Articulos.obejects.filter(nombre__icontains=producto) 
+            return render (request, "pagina_resultado.html", {"articulos":articulo, "consulta":producto})
+        
+else:
+    mensaje= 'No has intorucido nada.'
+    
+return HttpResponse(mensaje)

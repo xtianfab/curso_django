@@ -1,0 +1,30 @@
+En settings registrar el servidor de mail
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_URL = '/static/'
+
+EMAIL_BACKEND="django.core.mail.backend.smtp.EmailBackend"
+
+<!-- Especificamos el host, por donde enviaremos los mails-->
+EMAIL_HOST="smtp.gmail.com"
+
+<!-- Esècificamos el protocolo de seguridad-->
+EMAIL_USE_TLS=True
+
+<!--Especificaos el puerto-->
+EMAIL_PORT=587
+
+<!--Usuario de mail-->
+EMAIL_HOST_USER="c.ram@hotmail.es"
+
+<!--Contraseña de mail-->
+EMAIL_HOST_PASSWORD=""
+
+
+-PROBAR SI ENVIA EL MAIL-------------------------------------------------
+from django.core.mail import send_mail
+
+send_mail('Asunto', 'Mensaje que vamos a enviar', 'c.ram@hotmail.es', ['cristian.ramirez@tigo.net.py'], fail_silently=False)
