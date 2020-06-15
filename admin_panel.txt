@@ -7,7 +7,7 @@ python manage.py runserver
 - ingresar a la url de admin
 127.0.0.1:8000/admin
 
-- Resitrar en el archivo admin los models.
+- Registrar en el archivo admin los models.
 
 from getionsPedidos.models import Clientes, Articulos, Pedidos
 admin.site.register(Clientes)

@@ -1,0 +1,89 @@
+-Los api forms nos validan los formularios de manera automatica y nos simplifican el trabajo de crear formlarios.
+
+1. Crear un archivos .py donde crearemos todos los formularios de nuestra web, por convencion se crea en el mismo directorio donde esta views.py
+
+forms.py
+- Por cada formulario una clase
+- Debemos importar la clase forms
+
+from django import forms
+
+class FormularioContacto(forms.Form):
+
+    asunto=forms.CharField()
+    email=forms.EmailField()
+    mensaje=forms.CharField()
+
+
+2. En views importamos nuestro formulario
+from gestionPedidos.forms import FormularioContacto
+
+3. Creamos la vista del formulario
+
+def contacto(request):
+
+if request.method=="POST":
+    <!--Rescatamos la informacion introducida en el formulario-->
+    contact_form= FormularioContacto(request.POST)
+
+    if contact_form.is_valid():
+        info_form=contact_form.cleaned_data
+
+        send_mail(info_form['asunto'], info_form['mensaje'], info_form.get('email',''), [contactodesdeweb@qantris.com],)
+
+        return render(request, 'gracias.html')
+
+    else:
+        <!--formulario vacio, sin recatar lo intoducido-->
+        contact_form=FormularioContacto()
+
+    <!--Devolvemos los datos del formulario en un html
+    el html sera formulario_contacto.html y lo construira co nlos datos
+    del contact_form-->
+    return render (request, 'formulario_contacto.html', {'form':contact_form})
+
+4. Creamos el formulario_contacto.html
+
+<body>
+    <h1>Contactanos</h1>
+
+    <!--Verificamos que todos los campos esten completos-->
+    {% if form.errors %}
+        <p style="color:red">Por favor, completa todos los campos</p>
+
+    {% endif %}
+
+    <form action="" method="POST"> {% csrf_token %}
+
+        <table>
+
+            {{ form.as_table }}
+
+        </table>
+
+        <input type="submit" value="Enviar">
+
+
+    </form>
+</body>
+
+
+
+
+
+
+
+
+Por defecto nos crea un formulario en tablas <tr></tr><th></th>
+Si queremos formatear los hacemos con:
+miFOrmulario.as_p()--------------------------------------------------- 
+en vez de <tr><th></th></tr> nos formatea a <p></p>
+
+miFOrmulario.as_p()---------------------------------------------------
+en vez de <tr><th></th></tr> nos formatea a <li></li>
+
+miFOrmulario.is_valid()---------------------------------------------------
+Nos devuelve True si el formulario es valido, False caso contrario
+
+miFOrmulario.cleaned_data---------------------------------------------------
+nos devuelve los datos cargados en el formulario
