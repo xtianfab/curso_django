@@ -1,0 +1,10 @@
+Instalar el archivo binario de Mysql desde la url:
+https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient
+
+pip install carpeta_donde_esta_el_archivo/mysqlcliente-1.3....
+
+Instalar Mysql
+pip install mysqlclient
+
+Para ingresar a la bd con el usuario root (Contraseña en blanco)
+mysql -u root -p 
